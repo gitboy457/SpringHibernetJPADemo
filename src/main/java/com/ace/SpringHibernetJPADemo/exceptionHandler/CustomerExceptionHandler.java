@@ -2,6 +2,8 @@ package com.ace.SpringHibernetJPADemo.exceptionHandler;
 
 import java.util.Date;
 
+import javax.persistence.NoResultException;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -51,7 +53,7 @@ public class CustomerExceptionHandler   {
 		System.out.println(ex.getLocalizedMessage());
 		System.out.println(":::::::::::::::::::::::::::");
 		System.out.println(ex.toString());
-		ex.printStackTrace();
+		//ex.printStackTrace();
 		LogRequestResponse logRequestResponse = new LogRequestResponse();
 		ErrorResponse error= new ErrorResponse();
 		error.setCurrentDate(new Date());
@@ -66,6 +68,7 @@ public class CustomerExceptionHandler   {
 	
 	@ExceptionHandler(value=AuthenticationFailException.class)
 	public final ResponseEntity<Object> AuthenticationFailExceptionHandler(AuthenticationFailException ex){
+		logger.info("error message ",ex);
 		LogRequestResponse logRequestResponse = new LogRequestResponse();
 		ErrorResponse error= new ErrorResponse();
 		error.setCurrentDate(new Date());
@@ -79,6 +82,7 @@ public class CustomerExceptionHandler   {
 	
 	@ExceptionHandler(value=AuthorizationFailException.class)
 	public final ResponseEntity<Object> AuthorizationFailExceptionHandler(AuthorizationFailException ex){
+		logger.info("error message ",ex);
 		LogRequestResponse logRequestResponse = new LogRequestResponse();
 		ErrorResponse error= new ErrorResponse();
 		error.setCurrentDate(new Date());
@@ -90,4 +94,16 @@ public class CustomerExceptionHandler   {
 		
 	}
 
+	
+	  @ExceptionHandler(value=NoResultException.class) public final
+	  ResponseEntity<Object> NoResultExceptionHandler(NoResultException ex){
+	  logger.info("error message ",ex); LogRequestResponse logRequestResponse = new
+	  LogRequestResponse(); ErrorResponse error= new ErrorResponse();
+	  error.setCurrentDate(new Date()); error.setMessage("no record found");
+	  error.setStatusCode(9001); ResponseEntity<Object> response =new
+	  ResponseEntity<Object>(error ,HttpStatus.OK);
+	  logRequestResponse.logResponse(response); return response;
+	  
+	  }
+	 
 }

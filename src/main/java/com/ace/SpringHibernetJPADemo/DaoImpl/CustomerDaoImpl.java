@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import com.ace.SpringHibernetJPADemo.entity.Customer;
 @Repository
 
 public class CustomerDaoImpl implements CustomerDao {
+	
+	
 
 	@Autowired
 	private  EntityManager em;
@@ -33,7 +36,9 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public Customer findByid(String custId) {
 		Customer customer = null;
+		
 		customer = (Customer) em.createNamedQuery("findById").setParameter(1, custId).getSingleResult();
+		
 		return customer;
 	}
 
